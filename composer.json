@@ -1,0 +1,41 @@
+{
+    "name": "callcocam/laravel-vue-siga-admin",
+    "description": "admin back end laravel vue js",
+    "type": "packpage",
+    "keywords": [
+        "admin",
+        "vue",
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "laravel/framework": "^7.0",
+        "doctrine/dbal": "^2.10",
+        "laravel/ui": "^2.0",
+        "lucascudo/laravel-pt-br-localization": "dev-master",
+        "tymon/jwt-auth": "^1.0"
+    },
+    "authors": [
+        {
+            "name": "Claudio Campos",
+            "email": "callcocam@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "files": [
+            "src/helper.php"
+        ],
+        "psr-4": {
+            "SIGA\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SIGA\\SigaServiceProvider"
+            ]
+        }
+    }
+}

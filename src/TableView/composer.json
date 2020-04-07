@@ -1,0 +1,37 @@
+{
+  "name": "kabbouchi/laravel-table-view",
+  "description": "Laravel 5 Package for easily displaying table views for Eloquent Collections.",
+  "keywords": ["laravel", "table","view","table-view"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Georges KABBOUCHI",
+      "email": "georges.kabbouchi@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "KABBOUCHI\\TableView\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "require": {
+    "php": ">=5.4",
+    "illuminate/support": "~5|~6|~7",
+    "illuminate/pagination": "~5|~6|~7"
+  },
+   "extra": {
+      "laravel": {
+        "providers": [
+          "KABBOUCHI\\TableView\\TableViewServiceProvider"
+        ],
+        "aliases": {
+          "TableView": "KABBOUCHI\\TableView\\Facades\\TableView"
+        }
+      }
+  },
+  "minimum-stability": "stable"
+
+}
