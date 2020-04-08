@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use SIGA\Acl\AclServiceProvider;
 use SIGA\Notify\NotifyServiceProvider;
 use SIGA\Providers\MacrosServiceProvider;
+use SIGA\Providers\SigaEventServiceProvider;
 use SIGA\Providers\SigaRouteServiceProvider;
 use SIGA\TableView\TableViewServiceProvider;
 
@@ -29,6 +30,7 @@ class SigaServiceProvider extends ServiceProvider
         $this->app->register(MacrosServiceProvider::class);
         $this->app->register(FormBuilderServiceProvider::class);
         $this->app->register(NotifyServiceProvider::class);
+        $this->app->register(SigaEventServiceProvider::class);
 
         $this->app->register(SigaRouteServiceProvider::class);
 

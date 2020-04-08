@@ -11,7 +11,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
 use SIGA\TableView\Events\AfterFormCreation;
 
-class tableViewFormBuilder
+class TableViewFormBuilder
 {
     /**
      * @var Container

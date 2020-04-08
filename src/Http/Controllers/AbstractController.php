@@ -17,6 +17,9 @@ class AbstractController extends Controller
 {
 
     protected $model;
+    protected $eventCreate;
+    protected $eventUpdate;
+    protected $eventDelete;
     protected $templateList = "index";
     protected $templateEdit = "edit";
     protected $templateShow = "show";
@@ -82,6 +85,8 @@ class AbstractController extends Controller
 
             if($formView->createBy($request->post())){
 
+                $this->execEvent($this->eventCreate, $formView->getModel());
+
                 notify()->success($formView->getResult('messages'));
 
                 return redirect()->to($formView->getEdit('api'))->with('success', $formView->getResult('messages'));
@@ -93,6 +98,8 @@ class AbstractController extends Controller
         }
 
         if($formView->updateBy($request->post(), $id)){
+
+            $this->execEvent($this->eventUpdate, $formView->getModel());
 
             notify()->success($formView->getResult('messages'));
 
@@ -164,6 +171,8 @@ class AbstractController extends Controller
 
         if($formView->deleteBy($formView)){
 
+            $this->execEvent($this->eventDelete, $formView);
+
             notify()->success($formView->getResult('messages'));
 
             return redirect()->to($formView->getEdit('api'))->with('success', $formView->getResult('messages'));
@@ -173,5 +182,21 @@ class AbstractController extends Controller
 
         return back()->withErrors($formView->getResult('messages'));
 
+    }
+
+    protected function execEvent($event, $params= null){
+
+        if($event){
+
+            if($params){
+
+                event(new $event($params));
+
+            }
+            else{
+
+                event(new $event);
+            }
+        }
     }
 }

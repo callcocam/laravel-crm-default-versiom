@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(["middleware"=>'auth','prefix'=>'admin'], function ($router) {
 
     \SIGA\AutoRoute::get("/","AdminController","index","admin");
-    \SIGA\AutoRoute::get("/profile","UserController","profile","admin.profile.index");
-    \SIGA\AutoRoute::post("/profile","UserController","profile","admin.profile.store");
+    \SIGA\AutoRoute::get("/minha-conta","UserController","profile","admin.profile.index");
+    \SIGA\AutoRoute::post("/profile","UserController","store","admin.profile.store");
     \SIGA\AutoRoute::resources("users","UserController","users");
     \SIGA\AutoRoute::resources("companies","CompanyController","companies");
     \SIGA\AutoRoute::resources("roles","RoleController","roles");

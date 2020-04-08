@@ -63,6 +63,13 @@ abstract class AbstractField
     protected $parent;
 
     /**
+     * Array of filters key(alias/name) => objects.
+     *
+     * @var array
+     */
+    protected $filters = [];
+
+    /**
      * Get the template, can be config variable or view path.
      *
      * @return string
@@ -113,7 +120,15 @@ abstract class AbstractField
 
         return $this;
     }
-
+    /**
+     * Check if the field is rendered.
+     *
+     * @return bool
+     */
+    public function isRendered()
+    {
+        return $this->rendered;
+    }
     /**
      * Get validation rules for a field if any with label for attributes.
      *
@@ -267,6 +282,19 @@ abstract class AbstractField
     {
         return $this->transformKey($this->name);
     }
+
+
+    /**
+     * Method getFilters returns array of binded filters
+     * if there are any binded. Otherwise empty array.
+     *
+     * @return array
+     */
+    public function getFilters()
+    {
+        return $this->filters;
+    }
+
 
     /**
      * Check if fields needs label.

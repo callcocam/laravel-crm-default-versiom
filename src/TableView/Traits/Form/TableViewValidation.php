@@ -8,6 +8,9 @@ namespace SIGA\TableView\Traits\Form;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
+use Illuminate\Contracts\Validation\Validator;
+
 trait TableViewValidation
 {
     /**
@@ -35,6 +38,15 @@ trait TableViewValidation
      * @var string
      */
     protected $errorBag = 'default';
+    /**
+     * @var ValidatorFactory
+     */
+    protected $validatorFactory;
+
+    /**
+     * @var Validator
+     */
+    protected $validator = null;
 
     /**
      * Returns wether form errors should be shown under every field.
@@ -109,5 +121,28 @@ trait TableViewValidation
     public function getErrorBag()
     {
         return $this->errorBag;
+    }
+
+    /**
+     * Set the Validator instance on this so we can use it later.
+     *
+     * @param ValidatorFactory $validator
+     * @return $this
+     */
+    public function setValidator(ValidatorFactory $validator)
+    {
+        $this->validatorFactory = $validator;
+
+        return $this;
+    }
+
+    /**
+     * Returns the validator instance.
+     *
+     * @return Validator
+     */
+    public function getValidator()
+    {
+        return $this->validator;
     }
 }

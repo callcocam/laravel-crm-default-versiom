@@ -236,8 +236,8 @@ class TableViewColumn
         $this->dataValuesSelected[$this->valueProperty] = $this->rowRealValue($model);
 
         return array_filter(array_merge($this->defaultValues($model),
-            $this->appendOptionsChoices,
             $this->appendOptionsEntity,
+            $this->appendOptionsChoices,
             $this->dataValuesSelected));
     }
 

@@ -31,8 +31,9 @@ trait Update
         /**
          * @var TableViewForm $tableView
          */
-        $this->formView = tableViewForm($this->source);
+        $this->formView = tableViewForm();
 
+        $this->formView->setBuilder($this->source);
         $tableViewColumns = tableViewColumns($this->source);
         $tableViewColumns->hidden($this->getKeyName())->hidden_list(true);
         $this->init($tableViewColumns);

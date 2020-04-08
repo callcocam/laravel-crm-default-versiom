@@ -13,40 +13,6 @@ if (!function_exists('siga_path')){
     }
 }
 
-if (! function_exists('tableView')) {
-    /**
-     * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Builder $data
-     * @return \SIGA\TableView\TableView
-     */
-    function tableView($data)
-    {
-        return new SIGA\TableView\TableView($data);
-    }
-}
-
-if (! function_exists('tableViewColumns')) {
-    /**
-     * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Builder $data
-     * @return \SIGA\TableView\TableView
-     */
-    function tableViewColumns($data)
-    {
-        return new SIGA\TableView\DataViewsColumns($data);
-    }
-}
-
-
-if (! function_exists('tableViewForm')) {
-    /**
-     * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Builder $data
-     * @return \SIGA\TableView\TableView
-     */
-    function tableViewForm($data)
-    {
-        return new SIGA\TableView\TableViewForm($data);
-    }
-}
-
 if (!function_exists('get_tenant_id')) {
     /**
      * Get the configuration path.
@@ -167,28 +133,3 @@ if (!function_exists('set_header_order')) {
 }
 
 
-if (!function_exists('form')) {
-
-    function form(\SIGA\TableView\TableViewForm $form, array $options = [])
-    {
-        return $form->renderForm($options);
-    }
-
-}
-if (!function_exists('form_start')) {
-
-    function form_start( array $options = [])
-    {
-        return view($options['open'],$options);
-    }
-
-}
-
-if (!function_exists('form_end')) {
-
-    function form_end( array $options = [])
-    {
-        return view($options['close'],$options);
-    }
-
-}

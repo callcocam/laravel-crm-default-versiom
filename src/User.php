@@ -42,6 +42,7 @@ class User  extends Authenticatable
         $dataViewsColumns->view('roles')
             ->type('entity')
             ->entity(Role::class)
+            ->expanded(true)
             ->multiple(true);
 
         $dataViewsColumns->status('status','Status')->sorter(true);

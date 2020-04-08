@@ -17,6 +17,8 @@ trait Choices
 
         $this->expanded($expanded);
 
+        $this->type('choice');
+
         $this->multiple($multiple);
 
         $this->choice_options($choice_options);
@@ -43,6 +45,13 @@ trait Choices
     public function choice_options($choice_options)
     {
         $this->appendOptionsChoices['choice_options'] = $choice_options;
+
+        return $this;
+    }
+    public function selected($selected)
+    {
+
+        $this->appendOptionsChoices['selected'] = $selected;
 
         return $this;
     }

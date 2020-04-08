@@ -40,6 +40,7 @@ abstract class ParentType extends AbstractField
             $this->createChildren();
         }
         $this->checkIfFileType();
+
     }
 
     /**

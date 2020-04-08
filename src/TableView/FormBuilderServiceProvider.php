@@ -10,6 +10,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use SIGA\TableView\DataViewFormHelper;
 use SIGA\TableView\TableViewForm;
+use SIGA\TableView\TableViewFormBuilder;
 
 class FormBuilderServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,12 @@ class FormBuilderServiceProvider extends ServiceProvider
         );
         $this->registerFormHelper();
         $this->registerHtmlIfNeeded();
+
+
+        $this->app->singleton('laravel-form-builder', function ($app) {
+
+            return new TableViewFormBuilder($app, $app['laravel-form-helper'], $app['events']);
+        });
     }
 
 

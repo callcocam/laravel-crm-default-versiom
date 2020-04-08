@@ -30,7 +30,9 @@ trait Create
         /**
          * @var TableViewForm $tableView
          */
-        $this->formView = tableViewForm($this->source);
+        $this->formView = tableViewForm();
+
+        $this->formView->setBuilder($this->source);
 
         $tableViewColumns = tableViewColumns($this->source);
 

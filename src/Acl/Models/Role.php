@@ -81,18 +81,23 @@ class Role extends Model implements RoleContract
 
     public function init(DataViewsColumns $dataViewsColumns)
     {
-        $dataViewsColumns->column("name");
-        $dataViewsColumns->column("special")->type('choice')->choices([
+
+        $dataViewsColumns->column("name")->sorter(true);
+
+        $dataViewsColumns->column("special")->choices([
             ''=>"Acesso Controlado",
             'all-access'=>"Acesso Total",
             'no-access'=>"Nenhum Acesso",
         ])->expanded(true);
+
+
         $dataViewsColumns->view("permissions")
             ->entity(Permission::class)
             ->expanded(true)
             ->multiple(true)->hidden_list(true);
         $dataViewsColumns->status("status");
 
+          $dataViewsColumns->text('description')->hidden_list(true);
         if($this->tableView){
             $this->tableView->childDetails(function ($data) {
                 return view('laravel-form-builder::partials.permission',['data' => $data->permissions ]); // return view or string

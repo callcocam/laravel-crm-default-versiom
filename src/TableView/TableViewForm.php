@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use SIGA\TableView\Fields\AbstractField;
+use SIGA\TableView\Traits\Form\TableViewBuilder;
+use SIGA\TableView\Traits\Form\TableViewEvent;
+use SIGA\TableView\Traits\Form\TableViewfilterFields;
 use SIGA\TableView\Traits\Form\TableViewValidation;
 use SIGA\TableView\Traits\TableViewOptions;
 use SIGA\TableView\Traits\TableViewResults;
@@ -18,7 +21,7 @@ use SIGA\TableView\Traits\TableViewRoutes;
 class TableViewForm
 {
 
-    use TableViewValidation, TableViewOptions, TableViewRoutes,TableViewResults;
+    use TableViewValidation, TableViewOptions, TableViewRoutes,TableViewResults, TableViewfilterFields, TableViewEvent, TableViewBuilder;
 
     protected $formOptions = [
         "method"=>"POST"
@@ -80,14 +83,28 @@ class TableViewForm
 
     protected $data;
 
-    public function __construct($model)
+    public function __construct()
     {
-        $this->builder = $model;
         $this->formHelper = app()->get('laravel-form-helper');
         $this->config = $this->formHelper->getConfig();
 
     }
 
+    public function setBuilder($builder){
+
+        $this->builder = $builder;
+
+        return $this;
+    }
+
+    /**
+     * Build the form.
+     *
+     * @return mixed
+     */
+    public function buildForm()
+    {
+    }
     /**
      * @return Builder[]|\Illuminate\Database\Eloquent\Collection
      */
@@ -343,6 +360,39 @@ class TableViewForm
         ]);
         return $this->generate([]);
 
+    }
+
+    /**
+     * Render rest of the form.
+     *
+     * @param bool $showFormEnd
+     * @param bool $showFields
+     * @return string
+     */
+    public function renderRest($showFormEnd = true, $showFields = true)
+    {
+        $fields = $this->getUnrenderedFields();
+
+        return $this->render([], $fields, false, $showFields, $showFormEnd);
+    }
+
+    /**
+     * Get all fields that are not rendered.
+     *
+     * @return array
+     */
+    protected function getUnrenderedFields()
+    {
+        $unrenderedFields = [];
+
+        foreach ($this->fields as $field) {
+            if (!$field->isRendered()) {
+                $unrenderedFields[] = $field;
+                continue;
+            }
+        }
+
+        return $unrenderedFields;
     }
 
     protected function generate($data){

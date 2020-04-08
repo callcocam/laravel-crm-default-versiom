@@ -34,9 +34,9 @@ class RoleObserver
      */
     public function created(Role $role)
     {
-        if($this->roleRequest->has('permissions')){
-            $role->permissions()->sync($this->roleRequest->get("permissions"));
-        }
+        //if($this->roleRequest->has('permissions')){
+         //   $role->permissions()->sync($this->roleRequest->get("permissions"));
+        //}
     }
 
     /**
@@ -47,9 +47,9 @@ class RoleObserver
      */
     public function updated(Role $role)
     {
-        if($this->roleRequest->has('permissions')){
-            $role->permissions()->sync($this->roleRequest->get("permissions"));
-        }
+        //if($this->roleRequest->has('permissions')){
+            //$role->permissions()->sync($this->roleRequest->get("permissions"));
+        //}
     }
 
     /**
@@ -60,7 +60,7 @@ class RoleObserver
      */
     public function deleted(Role $role)
     {
-        dd($role);
+       //
     }
 
     /**

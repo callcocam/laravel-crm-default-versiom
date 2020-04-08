@@ -7,6 +7,7 @@
 namespace SIGA\TableView\Fields;
 
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use SIGA\TableView\TableViewForm;
 
@@ -149,7 +150,12 @@ abstract class AbstractSelectType extends AbstractField
     protected function buildCheckableChildren($fieldType)
     {
         $multiple = $this->getOption('multiple') ? '[]' : '';
-
+        $values=$this->options[$this->valueProperty];
+        if($this->options[$this->valueProperty] instanceof Collection){
+            $values=$this->options[$this->valueProperty]->map(function($value){
+                return $value->id;
+            })->toArray();
+        }
         foreach ((array)$this->options['choices'] as $key => $choice) {
             $id = str_replace('.', '_', $this->getNameKey()) . '_' . $key;
             $options = $this->formHelper->mergeOptions(
@@ -158,7 +164,7 @@ abstract class AbstractSelectType extends AbstractField
                     'attr'       => ['id' => $id],
                     'label_attr' => ['for' => $id],
                     'label'      => $choice,
-                    'checked'    => in_array($key, (array)$this->options[$this->valueProperty]),
+                    'checked'    => in_array($key, (array)$values),
                     'value'      => $key
                 ]
             );

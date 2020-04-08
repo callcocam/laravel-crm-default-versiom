@@ -33,4 +33,12 @@ trait TraitTable
         return $this->getTable();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
 }
