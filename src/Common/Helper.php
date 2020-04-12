@@ -52,6 +52,9 @@ trait Helper
 
         if($this->messages){
 
+            if(!isset($this->messages))
+                $this->messages[] = $this->messages;
+
             foreach ($this->messages as $message){
 
                 $messageAppend[] = $message;

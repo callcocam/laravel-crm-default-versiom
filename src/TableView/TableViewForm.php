@@ -244,10 +244,12 @@ class TableViewForm
     public function renderView($template = null)
     {
 
-        $this->setResults();
-        return $this->formHelper->getView()
-            ->make($this->getConfig($template, sprintf("admin.%s",$template)))
-            ->with('tableView', $this)->render();
+       try{
+           $this->setResults();
+           return $this->formHelper->getView()
+               ->make($this->getConfig($template, sprintf("admin.%s",$template)))
+               ->with('tableView', $this)->render();
+       }catch (\Exception $exception){}
     }
 
     /**

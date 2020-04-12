@@ -51,7 +51,7 @@ class Helper
 
                     if ($this->getRequired($data)):
 
-                        if(!$permission->findBy(['name' => $route->action['as']])->first()) {
+                        if(!$permission->query()->where(['slug' => $route->action['as']])->first()) {
 
                             $group = last($data);
 

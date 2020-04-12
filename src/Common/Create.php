@@ -53,6 +53,15 @@ trait Create
      */
     public function createBy($input)
     {
+        return $this->finallyCreated($input);
+    }
+
+    /**
+     * @param $input
+     * @return mixed
+     */
+    protected function finallyCreated($input)
+    {
         array_push($this->fillable,'company_id','created_at','updated_at');
 
         unset($input['id']);
@@ -72,7 +81,7 @@ trait Create
 
         } catch (\Illuminate\Database\QueryException $e) {
 
-            $this->messages = $e->getMessage();
+            $this->messages[] = $e->getMessage();
 
             if ($this->errorsKeysCreate) {
 
@@ -102,6 +111,4 @@ trait Create
 
         return $this->setMessages(true,'create');
     }
-
-
 }

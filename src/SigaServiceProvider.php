@@ -8,6 +8,10 @@ namespace SIGA;
 
 use Illuminate\Support\ServiceProvider;
 use SIGA\Acl\AclServiceProvider;
+use SIGA\Acl\Models\Permission;
+use SIGA\Activitylog\ActivitylogServiceProvider;
+use SIGA\Console\Commands\AddPermissionsComand;
+use SIGA\Menus\MenuServiceProvider;
 use SIGA\Notify\NotifyServiceProvider;
 use SIGA\Providers\MacrosServiceProvider;
 use SIGA\Providers\SigaEventServiceProvider;
@@ -24,21 +28,31 @@ class SigaServiceProvider extends ServiceProvider
     public function register()
     {
 
+        $this->app->register(ActivitylogServiceProvider::class);
         $this->app->register(AutoRouteServiceProvider::class);
         $this->app->register(AclServiceProvider::class);
         $this->app->register(TableViewServiceProvider::class);
         $this->app->register(MacrosServiceProvider::class);
         $this->app->register(FormBuilderServiceProvider::class);
         $this->app->register(NotifyServiceProvider::class);
+        $this->app->register(MenuServiceProvider::class);
         $this->app->register(SigaEventServiceProvider::class);
 
         $this->app->register(SigaRouteServiceProvider::class);
 
         $this->mergeConfigFrom(siga_path('config\\siga.php'),'siga');
 
-        $this->loadMigrationsFrom(siga_path('database/migrations'));
+       // $this->loadMigrationsFrom(siga_path('database/migrations'));
 
         $this->loadViewsFrom(siga_path('resources/views'),'siga');
+
+        $this->app->singleton('make.permissions',
+            function($app) {
+
+                return new AddPermissionsComand(app(Permission::class));
+            });
+
+        $this->commands('make.permissions');
 
     }
     /**
@@ -65,11 +79,11 @@ class SigaServiceProvider extends ServiceProvider
 
 
         $this->publishes([
-            __DIR__.'/database/seeds/' => database_path('migrations/seeds')
+            __DIR__.'/database/seeds/' => database_path('seeds')
         ], 'seeds');
 
         $this->publishes([
-            __DIR__.'/database/factories/' => database_path('migrations/factories')
+            __DIR__.'/database/factories/' => database_path('factories')
         ], 'factories');
 
 

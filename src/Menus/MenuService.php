@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Suports\Menus;
+namespace SIGA\Menus;
 
 
 use Illuminate\Support\Facades\Route;
@@ -20,27 +20,20 @@ class MenuService
             [
                 'cannot'=>['admin.companies.index'],
                 'liClass'=>'nav-item',
-                'aClass'=>'nav-item-hold',
-                'iconClass'=>'nav-icon i-Gear-2',
+                'aClass'=>'nav-link',
+                'iconClass'=>'fas fa-cogs nav-icon',
                 'route'=>'admin.companies.index',
                 'label'=>"Configurações",
             ],
             [
-                'cannot'=>['admin.roles.index','admin.permissions.index'],
+                'cannot'=>['admin.users.index','admin.roles.index','admin.permissions.index'],
                 'liClass'=>'nav-item',
-                'aClass'=>'nav-item-hold',
-                'iconClass'=>'nav-icon i-Lock-User',
+                'aClass'=>'nav-link',
+                'iconClass'=>'fas fa-user-lock nav-icon',
                 'dataItem'=>'operacional',
                 'href'=>'#',
                 'label'=>"Operacional",
-            ],
-            [
-                'cannot'=>['admin.users.index'],
-                'liClass'=>'nav-item',
-                'aClass'=>'nav-item-hold',
-                'iconClass'=>'nav-icon i-Add-User',
-                'route'=>'admin.users.index',
-                'label'=>"Usuários",
+                'items'=>$this->children()
             ],
         ]);
         return $this;
@@ -51,33 +44,51 @@ class MenuService
      */
     public function children(){
 
-        $this->menus = [
-            'operacional'=>[
-                [
-                    'liClass'=>'nav-item',
-                    'aClass'=>'nav-item',
-                    'iconClass'=>'nav-icon i-Arrow-Forward-2',
-                    'route'=>'admin.permissions.index',
-                    'label'=>"Permissões",
-                ],
-                [
-                    'cannot'=>['admin.roles.index'],
-                    'liClass'=>'nav-item',
-                    'aClass'=>'nav-item-hold',
-                    'iconClass'=>'nav-icon i-Arrow-Forward-2',
-                    'route'=>'admin.roles.index',
-                    'label'=>"Papéis",
-                ]
+       return [
+            [
+                'cannot'=>['admin.users.index'],
+                'route'=>'admin.users.index',
+                'liClass'=>'nav-item',
+                'aClass'=>'nav-link',
+                'iconClass'=>'far fa-circle nav-icon',
+                'route'=>'admin.users.index',
+                'label'=>"Users",
+            ],
+            [
+                'cannot'=>['admin.permissions.index'],
+                'liClass'=>'nav-item',
+                'aClass'=>'nav-link',
+                'iconClass'=>'far fa-circle nav-icon',
+                'route'=>'admin.permissions.index',
+                'label'=>"Permission",
+            ],
+            [
+                'cannot'=>['admin.roles.index'],
+                'liClass'=>'nav-item',
+                'aClass'=>'nav-link',
+                'iconClass'=>'far fa-circle nav-icon',
+                'route'=>'admin.roles.index',
+                'label'=>"Roles",
             ],
         ];
-
-        return $this;
     }
 
     public function render($template="parent"){
+        $menus=[];
+        foreach ($this->menus as $menu):
+            if(isset($menu['items'])):
 
+                $menus[]= view("vendor.menus.has-treeview", [
+                    'menus'=>$menu
+                ])->render();
+            else:
+                $menus[]= view("vendor.menus.nav-item", [
+                    'menus'=>$menu
+                ])->render();
+            endif;
+        endforeach;
         return view(sprintf("vendor.menus.%s", $template), [
-            'menus'=>$this->menus
+            'menus'=>implode(PHP_EOL, $menus)
         ])->render();
     }
 

@@ -6,7 +6,6 @@
  */
 namespace SIGA\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SIGA\Events\UserEvent;
 use SIGA\Forms\ProfileForm;
@@ -42,6 +41,76 @@ class UserController extends AbstractController
         ]);
 
         return view('admin.user.profile', [
+            'user'=>User::find(Auth::id()),
+            'form'=>$form
+        ]);
+    }
+
+    public function personalInformation(TableViewFormBuilder $tableViewFormBuilder){
+
+
+        $form = $tableViewFormBuilder->create(ProfileForm::class, [
+            'method' => 'POST',
+            'url' => route('admin.profile.store')
+        ]);
+
+        return view('admin.user.personal-information', [
+            'user'=>Auth::user(),
+            'form'=>$form
+        ]);
+    }
+
+    public function accountInformation(TableViewFormBuilder $tableViewFormBuilder){
+
+
+        $form = $tableViewFormBuilder->create(ProfileForm::class, [
+            'method' => 'POST',
+            'url' => route('admin.profile.store')
+        ]);
+
+        return view('admin.user.account-information', [
+            'user'=>Auth::user(),
+            'form'=>$form
+        ]);
+    }
+
+    public function changePassword(TableViewFormBuilder $tableViewFormBuilder){
+
+
+        $form = $tableViewFormBuilder->create(ProfileForm::class, [
+            'method' => 'POST',
+            'url' => route('admin.profile.store')
+        ]);
+
+        return view('admin.user.change-password', [
+            'user'=>Auth::user(),
+            'form'=>$form
+        ]);
+    }
+
+    public function emailSettings(TableViewFormBuilder $tableViewFormBuilder){
+
+
+        $form = $tableViewFormBuilder->create(ProfileForm::class, [
+            'method' => 'POST',
+            'url' => route('admin.profile.store')
+        ]);
+
+        return view('admin.user.email-settings', [
+            'user'=>Auth::user(),
+            'form'=>$form
+        ]);
+    }
+
+    public function credCards(TableViewFormBuilder $tableViewFormBuilder){
+
+
+        $form = $tableViewFormBuilder->create(ProfileForm::class, [
+            'method' => 'POST',
+            'url' => route('admin.profile.store')
+        ]);
+
+        return view('admin.user.cred-cards', [
             'user'=>Auth::user(),
             'form'=>$form
         ]);

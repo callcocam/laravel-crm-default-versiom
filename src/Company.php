@@ -23,7 +23,17 @@ class Company extends Model
     ];
     public function init(DataViewsColumns $dataViewsColumns)
     {
+        $this->setDefaultOption("title","Lista de companies");
        // $tableView->column('id')->format('hidden');
+        $dataViewsColumns->column('name');
+        $dataViewsColumns->column('email');
+        $dataViewsColumns->column('phone');
+
+        if ($this->tableView){
+        
+            $this->tableView->setSearchableFields(['name','email']);
+        }
+
     }
 
     public function initFilter($query)

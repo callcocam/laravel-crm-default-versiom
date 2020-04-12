@@ -12,10 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 use SIGA\Acl\Concerns\HasPermissions;
 use SIGA\Acl\Contracts\Role as RoleContract;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use SIGA\Activitylog\Traits\LogsActivity;
 
 class Role extends Model implements RoleContract
 {
-    use HasPermissions,TraitTable;
+    use HasPermissions,TraitTable, LogsActivity;
+
+    protected static $logAttribute = ['name', 'slug'];
 
     public $incrementing = false;
 
@@ -81,6 +84,7 @@ class Role extends Model implements RoleContract
 
     public function init(DataViewsColumns $dataViewsColumns)
     {
+        $this->setDefaultOption("title","List Roles");
 
         $dataViewsColumns->column("name")->sorter(true);
 
@@ -93,6 +97,7 @@ class Role extends Model implements RoleContract
 
         $dataViewsColumns->view("permissions")
             ->entity(Permission::class)
+            ->property("description")
             ->expanded(true)
             ->multiple(true)->hidden_list(true);
         $dataViewsColumns->status("status");

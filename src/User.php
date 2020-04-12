@@ -6,23 +6,22 @@
  */
 namespace SIGA;
 
-use App\Category;
-use App\Post;
-use App\Tag;
 use SIGA\Acl\Concerns\HasRolesAndPermissions;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use SIGA\Acl\Models\Role;
+use SIGA\Activitylog\Traits\LogsActivity;
 use SIGA\TableView\DataViewsColumns;
 
 class User  extends Authenticatable
 {
- use TraitTable, HasRolesAndPermissions, Notifiable;
+ use TraitTable, HasRolesAndPermissions, Notifiable, LogsActivity;
 
     public $incrementing = false;
 
     protected $keyType = "string";
 
+    protected static $logAttribute = ['name', 'slug','email','phone','document'];
     /**
      * The attributes that are mass assignable.
      *
@@ -32,6 +31,7 @@ class User  extends Authenticatable
         'id', 'user_id', 'company_id','name','slug',"fantasy",'email','phone','document','birthday','gender','password','is_admin','status','description','created_at','updated_at'
     ];
 
+    
     public function init(DataViewsColumns $dataViewsColumns)
     {
         $this->setDefaultOption("title","Lista de users");
@@ -49,11 +49,11 @@ class User  extends Authenticatable
 
         $dataViewsColumns->closure('updated_at', function ($model) {
             return date_carbom_format($model->users_updated_at)->toFormattedDateString();
-        })->default_value(date("d/m/Y"));
+        })->default_value(date("d/m/Y"))->hidden_list(true);
 
         $dataViewsColumns->closure('created_at', function ($model) {
             return date_carbom_format($model->users_created_at)->toDateString();
-        })->default_value(date("d/m/Y"));
+        })->default_value(date("d/m/Y"))->hidden_list(true);
 
         if ($this->tableView){
             $this->tableView->childDetails(function ($data) {
@@ -92,17 +92,24 @@ class User  extends Authenticatable
     ];
 
 
-    public function category()
+    public function education()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasOne(Education::class);
     }
-    public function tag()
+   
+    public function educations()
     {
-        return $this->belongsTo(Tag::class);
+        return $this->hasMany(Education::class);
     }
-    public function posts()
+   
+    public function skill()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasOne(Skill::class);
+    }
+
+    public function skills()
+    {
+        return $this->hasMany(Skill::class);
     }
 
     public function address(){

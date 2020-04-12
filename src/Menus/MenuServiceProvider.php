@@ -8,7 +8,7 @@
  * https://www.sigasmart.com.br
  * ==============================================================================================================
  */
-namespace App\Suports\Menus;
+namespace SIGA\Menus;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;

@@ -70,18 +70,21 @@ trait TableViewFilters
 
         $this->addFilters("search", [
             'name'=>"q",
+            'col'=>"3",
             "value"=>$this->params('q','')
         ]);
 
 
         $this->addFilters("date", [
             'name'=>"date",
+            'col'=>"3",
             'start'=>$this->params('start',''),
             'end'=>$this->params('end',''),
         ]);
 
         $this->addFilters("status", [
             'name'=>"status",
+            'col'=>"2",
             "value"=>$this->params('status','all'),
             'options'=>[
                 'all'=>"Tudo",
@@ -92,6 +95,7 @@ trait TableViewFilters
 
         $this->addFilters("items-page", [
             'name'=>"perPage",
+            'col'=>"2",
             "value"=>$this->params('perPage',12),
             'options'=>[6,12,24,48,95]
         ]);

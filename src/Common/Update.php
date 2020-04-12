@@ -13,6 +13,7 @@ use SIGA\TraitTable;
 trait Update
 {
 
+    protected $updatedId = null;
 
     /**
      * @param $id
@@ -22,6 +23,8 @@ trait Update
     public function edit($id, $template="edit"){
 
         $this->queryParams = request()->query();
+
+        $this->updatedId = $id;
 
         $this->setSubmit();
 
@@ -44,6 +47,11 @@ trait Update
 
 
     public function updateBy($input,$id){
+        return $this->finallyUpdateBy($input,$id);
+    }
+
+
+    protected function finallyUpdateBy($input,$id){
         array_push($this->fillable,'updated_at');
         /**
          * @var $model TraitTable

@@ -132,4 +132,25 @@ if (!function_exists('set_header_order')) {
     }
 }
 
+if (!function_exists('get_route_active')) {
+    /**
+     * Get the configuration path.
+     *
+     * @param  string $path
+     * @return string
+     */
+    function get_route_active($route, $active =' kt-widget__item--active')
+    {
+
+        if(!is_array($route)){
+            $route[] = $route;
+        }
+        $currentRouteName = \Illuminate\Support\Facades\Route::currentRouteName();
+        if(in_array($currentRouteName, $route)){
+            return $active;
+        }
+        return '';
+    }
+}
+
 

@@ -7,9 +7,10 @@
 namespace SIGA\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use SIGA\Acl\Models\Role;
 use SIGA\TraitTable;
 use SIGA\User;
 
@@ -32,6 +33,8 @@ class AbstractController extends Controller
      */
     public function index()
     {
+       // dd();
+        $user = Auth::user();
 
         if (Gate::denies(Route::currentRouteName())) {
             return  back()->withErrors("Not Authorized");
@@ -175,7 +178,7 @@ class AbstractController extends Controller
 
             notify()->success($formView->getResult('messages'));
 
-            return redirect()->to($formView->getEdit('api'))->with('success', $formView->getResult('messages'));
+            return redirect()->to($formView->getIndex('api'))->with('success', $formView->getResult('messages'));
         }
 
         notify()->error($formView->getResult('messages'));

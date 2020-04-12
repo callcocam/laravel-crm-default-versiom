@@ -74,18 +74,22 @@ class AddPermissionsComand extends Command
                             $module = reset($module);
                             $module = str_replace("Controller", "",$module);
                            if($module){
-                               $this->permission->create([
-                                   'name'=>Str::title($module),
-                                   'slug'=>$route->action['as'],
-                                   'groups'=>last($data),
-                                   'description'=>Str::title(str_replace("."," ",$route->action['as'])),
-                                   'status'=>"published",
-                                   'created_at'=>date("Y-m-d H:i:s"),
-                                   'updated_at'=>date("Y-m-d H:i:s"),
-                               ]);
-                               if($this->permission->getResultLastId()):
-                                   $this->info(sprintf("Permission %s created success full", $route->action['as']));
-                               endif;
+                               try{
+                                  $this->permission->createBy([
+                                      'name'=>Str::title($module),
+                                      'slug'=>$route->action['as'],
+                                      'groups'=>last($data),
+                                      'description'=>Str::title(str_replace("."," ",$route->action['as'])),
+                                      'status'=>"published",
+                                      'created_at'=>date("Y-m-d H:i:s"),
+                                      'updated_at'=>date("Y-m-d H:i:s"),
+                                  ]);
+                                  if($this->permission->getResultLastId()):
+                                      $this->info(sprintf("Permission %s created success full", $route->action['as']));
+                                  endif;
+                              }catch (\Exception $exception){
+                                  dump($exception);
+                              }
                            }
 
                         }

@@ -8,7 +8,7 @@
  * ==============================================================================================================
  */
 
-namespace App\Suports\Menus;
+namespace SIGA\Menus;
 
 
 use Illuminate\Support\Facades\Facade;
