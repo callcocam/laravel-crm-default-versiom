@@ -241,7 +241,7 @@ class TableViewColumn
             $this->dataValuesSelected));
     }
 
-    protected function defaultValues($model){
+    public function defaultValues($model){
 
 
         return [

@@ -13,9 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+\SIGA\AutoRoute::get("/acesso-negado","RestrictController","index","restricts");
 
 Route::group(["middleware"=>'auth','prefix'=>'admin'], function ($router) {
 
+    
     \SIGA\AutoRoute::get("/","AdminController","index","admin");
 
     \SIGA\AutoRoute::get("/profile","UserController","profile","admin.profile.index");

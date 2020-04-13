@@ -37,7 +37,10 @@ class AbstractController extends Controller
         $user = Auth::user();
 
         if (Gate::denies(Route::currentRouteName())) {
-            return  back()->withErrors("Not Authorized");
+             
+            notify()->error("Not Authorized");
+
+            return redirect()->route('restricts');
         }
 
         if(is_string($this->model)){
@@ -56,7 +59,10 @@ class AbstractController extends Controller
     public function create ()
     {
         if (Gate::denies(Route::currentRouteName())) {
-            return  back()->withErrors("Not Authorized");
+            
+            notify()->error("Not Authorized");
+
+            return redirect()->route('restricts');
         }
         $tableView=[];
 
@@ -76,7 +82,10 @@ class AbstractController extends Controller
     {
 
         if (Gate::denies(Route::currentRouteName())) {
-            return  back()->withErrors("Not Authorized");
+            
+            notify()->error("Not Authorized");
+
+            return redirect()->route('restricts');
         }
         /**
          * @var $formView TraitTable
@@ -124,7 +133,10 @@ class AbstractController extends Controller
     {
 
         if (Gate::denies(Route::currentRouteName())) {
-            return  back()->withErrors("Not Authorized");
+             
+            notify()->error("Not Authorized");
+
+            return redirect()->route('restricts');
         }
         $tableView=[];
 
@@ -144,7 +156,10 @@ class AbstractController extends Controller
     {
 
         if (Gate::denies(Route::currentRouteName())) {
-            return  back()->withErrors("Not Authorized");
+             
+            notify()->error("Not Authorized");
+
+            return redirect()->route('restricts');
         }
         $tableView=[];
         if(is_string($this->model))
@@ -168,7 +183,10 @@ class AbstractController extends Controller
         $formView = app($this->model)->find($id);
 
         if (Gate::denies(Route::currentRouteName())) {
-            return  back()->withErrors("Not Authorized");
+
+            notify()->error("Not Authorized");
+
+            return redirect()->route('restricts');
         }
 
 

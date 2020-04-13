@@ -7,6 +7,7 @@
 namespace SIGA\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use SIGA\Activitylog\Models\Activity;
 use SIGA\Events\UserEvent;
 use SIGA\Forms\ProfileForm;
 use SIGA\Http\Requests\UserRequest;
@@ -35,13 +36,18 @@ class UserController extends AbstractController
     public function profile(TableViewFormBuilder $tableViewFormBuilder){
 
 
+        $user = User::find(Auth::id());
+
         $form = $tableViewFormBuilder->create(ProfileForm::class, [
             'method' => 'POST',
+            'model' => $user,
             'url' => route('admin.profile.store')
-        ]);
-
+        ], $user->toArray());
+    
+        $form->setFormOption('model',$user);
         return view('admin.user.profile', [
-            'user'=>User::find(Auth::id()),
+            'logs'=>Activity::all(),
+            'user'=>$user,
             'form'=>$form
         ]);
     }

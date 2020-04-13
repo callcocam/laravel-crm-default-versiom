@@ -83,7 +83,7 @@ class TableViewFormBuilder
         $this->eventDispatcher->dispatch(new AfterFormCreation($form));
 
         $form->filterFields();
-
+dd($form);
         return $form;
     }
 

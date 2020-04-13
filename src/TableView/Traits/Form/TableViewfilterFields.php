@@ -7,9 +7,10 @@
 namespace SIGA\TableView\Traits\Form;
 
 use Cron\AbstractField;
-use Illuminate\Http\Request;
 use SIGA\TableView\DataViewFormHelper;
 use SIGA\TableView\TableViewForm;
+use Illuminate\Support\Arr;
+use SIGA\TableView\Filters\FilterResolver;
 
 trait TableViewfilterFields
 {
@@ -32,7 +33,7 @@ trait TableViewfilterFields
         // If filtering is unlocked/allowed we can start with filtering process.
         if (!$this->isFilteringLocked()) {
             $filters = array_filter($this->getFilters());
-
+              dd($filters);
             if (count($filters)) {
                 $dotForm = $this->getNameKey();
 
@@ -42,6 +43,7 @@ trait TableViewfilterFields
                 foreach ($filters as $field => $fieldFilters) {
                     $dotField = $this->formHelper->transformToDotSyntax($field);
                     $fieldData = Arr::get($requestData, $dotField);
+                    dd($fieldData);
                     if ($fieldData !== null) {
                         // Assign current Raw/Unmutated value from request.
                         $localDotField = preg_replace('#^' . preg_quote("$dotForm.", '#') . '#', '', $dotField);
@@ -116,7 +118,7 @@ trait TableViewfilterFields
     /**
      * Get all fields.
      *
-     * @return AbstractField[]
+     * @return AbstractField
      */
     public function getFields()
     {
@@ -163,6 +165,7 @@ trait TableViewfilterFields
      */
     public function setData($name, $data)
     {
+       
         $this->data[$name] = $data;
     }
 

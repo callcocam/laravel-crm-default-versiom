@@ -10,6 +10,7 @@ use SIGA\Acl\Concerns\HasRolesAndPermissions;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use SIGA\Acl\Models\Role;
+use SIGA\Activitylog\Models\Activity;
 use SIGA\Activitylog\Traits\LogsActivity;
 use SIGA\TableView\DataViewsColumns;
 
@@ -119,6 +120,11 @@ class User  extends Authenticatable
     public function getAddressAttribute(){
 
         return $this->address();
+    }
+
+    public function logs(){
+
+        return $this->morphOne(Activity::class, 'causer')->orderBy('created_at','DESC')->limit(5);
     }
 
 }

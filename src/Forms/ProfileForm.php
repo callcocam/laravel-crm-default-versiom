@@ -19,6 +19,21 @@ class ProfileForm extends TableViewForm
             ->add('email', 'email',[
                 'label_show' => false,
             ])
+            ->add('phone', 'text',[
+                'label_show' => false,
+            ])
+            ->add('document', 'text',[
+                'label_show' => false,
+            ])
+            ->add('birthday', 'date',[
+                'label_show' => false,
+            ])
+            ->add('gender', 'choice',[
+                'choices' => ['male' => 'Male', 'femele' => 'Femele'],
+                'label_show' => false,
+                'selected' => "male",
+                'expanded' => true
+            ])
             ->add('description', 'textarea',[
                 'label_show' => false,
             ])

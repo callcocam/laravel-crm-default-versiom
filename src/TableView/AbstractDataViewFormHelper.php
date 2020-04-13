@@ -6,15 +6,9 @@
  */
 namespace SIGA\TableView;
 
-
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Translation\Translator;
 use Illuminate\Contracts\View\Factory as View;
-use Illuminate\Support\Collection;
-use SIGA\TableView\Fields\AbstractField;
-use SIGA\TableView\Traits\Form\Helpers\DataViewFormHelperAttributes;
-use SIGA\TableView\Traits\Form\Helpers\DataViewFormHelperMarge;
 
 class AbstractDataViewFormHelper
 {
