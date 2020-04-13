@@ -104,6 +104,13 @@ class TableViewForm
      */
     public function buildForm()
     {
+
+        if($this->fields){
+
+            foreach ($this->fields as $key => $value) {
+               $value->setValue($this->data[$value->getName()]);
+            }
+        }
     }
     /**
      * @return Builder[]|\Illuminate\Database\Eloquent\Collection

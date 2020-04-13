@@ -33,7 +33,7 @@ trait TableViewfilterFields
         // If filtering is unlocked/allowed we can start with filtering process.
         if (!$this->isFilteringLocked()) {
             $filters = array_filter($this->getFilters());
-              dd($filters);
+            
             if (count($filters)) {
                 $dotForm = $this->getNameKey();
 

@@ -1,23 +1,24 @@
 <?php
+
 /**
  * Created by Claudio Campos.
  * User: callcocam@gmail.com, contato@sigasmart.com.br
  * https://www.sigasmart.com.br
  */
+
 namespace SIGA\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
-use SIGA\Acl\Models\Role;
-use SIGA\TraitTable;
-use SIGA\User;
 
 class AbstractController extends Controller
 {
 
     protected $model;
+    protected $tableView;
+    protected $redirectRoute;
     protected $eventCreate;
     protected $eventUpdate;
     protected $eventDelete;
@@ -33,17 +34,16 @@ class AbstractController extends Controller
      */
     public function index()
     {
-       // dd();
-        $user = Auth::user();
+
 
         if (Gate::denies(Route::currentRouteName())) {
-             
+
             notify()->error("Not Authorized");
 
             return redirect()->route('restricts');
         }
 
-        if(is_string($this->model)){
+        if (is_string($this->model)) {
             return app($this->model)->findAll($this->templateList);
         }
 
@@ -56,20 +56,20 @@ class AbstractController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create ()
+    public function create()
     {
         if (Gate::denies(Route::currentRouteName())) {
-            
+
             notify()->error("Not Authorized");
 
             return redirect()->route('restricts');
         }
-        $tableView=[];
 
-        if(is_string($this->model))
-            $tableView = app($this->model)->create($this->templateCreate);
 
-        return $tableView;
+        if (is_string($this->model))
+            $this->tableView = app($this->model)->create($this->templateCreate);
+
+        return $this->tableView;
     }
 
     /**
@@ -78,49 +78,65 @@ class AbstractController extends Controller
      * @param  $request
      * @return \Illuminate\Http\Response
      */
-    public function save($request, $id=null)
+    public function save($request, $id = null)
     {
 
         if (Gate::denies(Route::currentRouteName())) {
-            
+
             notify()->error("Not Authorized");
 
             return redirect()->route('restricts');
         }
-        /**
-         * @var $formView TraitTable
-         */
-        $formView = app($this->model);
 
-        if ($request->isMethod("POST"))
-        {
+        $this->tableView = app($this->model);
 
-            if($formView->createBy($request->post())){
+        if ($request->isMethod("POST")) {
 
-                $this->execEvent($this->eventCreate, $formView->getModel());
+            if ($this->tableView->createBy($request->post())) {
 
-                notify()->success($formView->getResult('messages'));
+                $this->execEvent($this->eventCreate, $this->tableView->getModel());
 
-                return redirect()->to($formView->getEdit('api'))->with('success', $formView->getResult('messages'));
+                notify()->success($this->tableView->getResult('messages'));
+
+                if ($request->has('redirect')) {
+
+                    return redirect()->route($request->get('redirect'), request()->query())->with('success', $this->tableView->getResult('messages'));
+                }
+                if ($this->redirectRoute) {
+
+                    return redirect()->route($this->redirectRoute, request()->query())->with('success', $this->tableView->getResult('messages'));
+                }
+
+                return redirect()->to($this->tableView->getEdit('api'))->with('success', $this->tableView->getResult('messages'));
             }
-            notify()->error($formView->getResult('messages'));
 
-            return back()->withErrors($formView->getResult('messages'))->withInput($request->post());
+            notify()->error($this->tableView->getResult('messages'));
 
+            return back()->withErrors($this->tableView->getResult('messages'))->withInput($request->post());
         }
 
-        if($formView->updateBy($request->post(), $id)){
+        if ($this->tableView->updateBy($request->post(), $id)) {
 
-            $this->execEvent($this->eventUpdate, $formView->getModel());
+            $this->execEvent($this->eventUpdate, $this->tableView->getModel());
 
-            notify()->success($formView->getResult('messages'));
+            notify()->success($this->tableView->getResult('messages'));
 
-            return redirect()->to($formView->getEdit('api'))->with('success', $formView->getResult('messages'));
+            if ($request->has('redirect')) {
+
+                return redirect()->route($request->get('redirect'), request()->query())->with('success', $this->tableView->getResult('messages'));
+            }
+
+            if ($this->redirectRoute) {
+
+                return redirect()->route($this->redirectRoute, request()->query())->with('success', $this->tableView->getResult('messages'));
+            }
+
+            return redirect()->to($this->tableView->getEdit('api'))->with('success', $this->tableView->getResult('messages'));
         }
-        notify()->error($formView->getResult('messages'));
 
-        return back()->withErrors($formView->getResult('messages'))->withInput($request->post());
+        notify()->error($this->tableView->getResult('messages'));
 
+        return back()->withErrors($this->tableView->getResult('messages'))->withInput($request->post());
     }
 
     /**
@@ -133,17 +149,16 @@ class AbstractController extends Controller
     {
 
         if (Gate::denies(Route::currentRouteName())) {
-             
+
             notify()->error("Not Authorized");
 
             return redirect()->route('restricts');
         }
-        $tableView=[];
 
-        if(is_string($this->model))
-            $tableView = app($this->model)->findShow($id, $this->templateShow);
+        if (is_string($this->model))
+            $this->tableView = app($this->model)->findShow($id, $this->templateShow);
 
-        return $tableView;
+        return $this->tableView;
     }
 
     /**
@@ -156,16 +171,15 @@ class AbstractController extends Controller
     {
 
         if (Gate::denies(Route::currentRouteName())) {
-             
+
             notify()->error("Not Authorized");
 
             return redirect()->route('restricts');
         }
-        $tableView=[];
-        if(is_string($this->model))
-            $tableView = app($this->model)->edit($id, $this->templateEdit);
+        if (is_string($this->model))
+            $this->tableView = app($this->model)->edit($id, $this->templateEdit);
 
-        return $tableView;
+        return $this->tableView;
     }
 
 
@@ -177,10 +191,8 @@ class AbstractController extends Controller
      */
     public function destroy($id)
     {
-        /**
-         * @var $formView TraitTable
-         */
-        $formView = app($this->model)->find($id);
+
+        $this->tableView = app($this->model)->find($id);
 
         if (Gate::denies(Route::currentRouteName())) {
 
@@ -190,31 +202,29 @@ class AbstractController extends Controller
         }
 
 
-        if($formView->deleteBy($formView)){
+        if ($this->tableView->deleteBy($this->tableView)) {
 
-            $this->execEvent($this->eventDelete, $formView);
+            $this->execEvent($this->eventDelete, $this->tableView);
 
-            notify()->success($formView->getResult('messages'));
+            notify()->success($this->tableView->getResult('messages'));
 
-            return redirect()->to($formView->getIndex('api'))->with('success', $formView->getResult('messages'));
+            return redirect()->to($this->tableView->getIndex('api'))->with('success', $this->tableView->getResult('messages'));
         }
 
-        notify()->error($formView->getResult('messages'));
+        notify()->error($this->tableView->getResult('messages'));
 
-        return back()->withErrors($formView->getResult('messages'));
-
+        return back()->withErrors($this->tableView->getResult('messages'));
     }
 
-    protected function execEvent($event, $params= null){
+    protected function execEvent($event, $params = null)
+    {
 
-        if($event){
+        if ($event) {
 
-            if($params){
+            if ($params) {
 
                 event(new $event($params));
-
-            }
-            else{
+            } else {
 
                 event(new $event);
             }

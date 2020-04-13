@@ -266,7 +266,20 @@ class DataViewFormHelper extends AbstractDataViewFormHelper
     {
         return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $string);
     }
+/**
+     * @param string $string
+     * @return string
+     */
+    public function transformToBracketSyntax($string)
+    {
+        $name = explode('.', $string);
+        if ($name && count($name) == 1) {
+            return $name[0];
+        }
 
+        $first = array_shift($name);
+        return $first . '[' . implode('][', $name) . ']';
+    }
     /**
      * @param AbstractField $field
      * @return RulesParser

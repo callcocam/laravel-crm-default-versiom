@@ -20,14 +20,14 @@ Route::group(["middleware"=>'auth','prefix'=>'admin'], function ($router) {
     
     \SIGA\AutoRoute::get("/","AdminController","index","admin");
 
-    \SIGA\AutoRoute::get("/profile","UserController","profile","admin.profile.index");
-    \SIGA\AutoRoute::get("/personal-information","UserController","personalInformation","admin.personal-information.index");
-    \SIGA\AutoRoute::get("/account-information","UserController","accountInformation","admin.account-information.index");
-    \SIGA\AutoRoute::get("/change-password","UserController","changePassword","admin.change-password.index");
-    \SIGA\AutoRoute::get("/email-settings","UserController","emailSettings","admin.email-settings.index");
-    \SIGA\AutoRoute::get("/cred-cards","UserController","credCards","admin.cred-cards.index");
+    \SIGA\AutoRoute::get("/profile","ProfileController","profile","admin.profile.index");
+    \SIGA\AutoRoute::get("/personal-information","ProfileController","personalInformation","admin.personal-information.index");
+    \SIGA\AutoRoute::get("/account-information","ProfileController","accountInformation","admin.account-information.index");
+    \SIGA\AutoRoute::get("/change-password","ProfileController","changePassword","admin.change-password.index");
+    \SIGA\AutoRoute::get("/email-settings","ProfileController","emailSettings","admin.email-settings.index");
+    \SIGA\AutoRoute::get("/cred-cards","ProfileController","credCards","admin.cred-cards.index");
+    \SIGA\AutoRoute::put("/profile","ProfileController","store","admin.profile.store");
 
-    \SIGA\AutoRoute::post("/profile","UserController","store","admin.profile.store");
     \SIGA\AutoRoute::resources("users","UserController","users");
     \SIGA\AutoRoute::resources("companies","CompanyController","companies");
     \SIGA\AutoRoute::resources("roles","RoleController","roles");
